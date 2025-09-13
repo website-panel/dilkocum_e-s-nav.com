@@ -253,7 +253,8 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const ui = { sinavArayuzu: document.getElementById('sinav-arayuzu'), sonucArayuzu: document.getElementById('sonuc-arayuzu'), soruIcerik: document.getElementById('soru-icerik'), optikFormIcerik: document.getElementById('optik-form-icerik'), sonlandirBtn: document.getElementById('sinav-sonlandir-btn'), prevBtn: document.getElementById('prev-btn'), nextBtn: document.getElementById('next-btn'), onayPopup: document.getElementById('onay-popup'), bilgiPopup: document.getElementById('bilgi-popup'), sayacPopup: document.getElementById('sayac-popup'), soruDetayPopup: document.getElementById('soru-detay-popup'), kullaniciAdSoyad: document.querySelector('.kullanici-ad-soyad'), appContainer: document.getElementById('app-container'), sonuclaraDonBtn: document.getElementById('sonuclara-don-btn') };
-        const SORU_HAVUZU = [ {  {
+        const SORU_HAVUZU = [ 
+{  
         "metin": "Space is the boundless, three-dimensional extent in which objects and events occur ---- they have relative position and direction.",
         "secenekler": [
             "so that",
@@ -595,4 +596,5 @@
 
     </script>
 </body>
+
 </html>
