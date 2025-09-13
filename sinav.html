@@ -197,7 +197,60 @@
         .modal-body::-webkit-scrollbar-thumb:hover { background: #aaa; }
         
         @media (min-width: 992px) { .exam-body, #sonuc-arayuzu .main-content { flex-direction: row; align-items: flex-start; } #sonuc-arayuzu .left-panel { flex: 1; position: sticky; top: 20px; } #sonuc-arayuzu .right-panel-results { flex: 2; } }
-        @media (max-width: 768px) { .cevap-anahtari-satir { flex-direction: column; align-items: flex-start; gap: 10px; } .cevap-durum { margin-left: auto; } }
+        
+        /* YENİ: Profesyonel mobil soru görünümü için tasarım harikası stilleri */
+        @media (max-width: 768px) { 
+            .cevap-anahtari-satir { flex-direction: column; align-items: flex-start; gap: 10px; } 
+            .cevap-durum { margin-left: auto; }
+            .exam-body { flex-direction: column-reverse; } /* Optik formu üste alır */
+            .right-panel-exam { position: static; max-height: 250px; } /* Optik form yüksekliğini sınırlar */
+            .question-panel { padding: 20px 15px; }
+
+            .question-main {
+                flex-wrap: wrap; /* Butonların alta düşmesini sağlar */
+                gap: 25px; /* Butonlar ve içerik arası boşluk */
+                justify-content: space-between;
+            }
+
+            .question-content {
+                flex-basis: 100%; /* Soru içeriği tam genişliği kaplasın */
+                order: 1; /* Soru içeriği en üste gelsin */
+            }
+            
+            .question-text {
+                font-size: 1.1em; /* Mobil için daha okunaklı yazı boyutu */
+                line-height: 1.7; /* Uzun metinlerde daha iyi okunabilirlik için satır aralığı */
+            }
+            
+            .question-side-nav {
+                flex-basis: 48%; /* Butonların yan yana sığması için genişlik */
+                order: 2; /* Butonlar soru içeriğinin altına gelsin */
+                margin-top: 0; /* Üstteki boşluğu sıfırla */
+            }
+            
+            .nav-button {
+                width: 100%; /* Kapsayıcısının tamamını doldur */
+                height: auto;
+                padding: 12px 15px; /* Daha dokunulabilir butonlar */
+                border-radius: 8px;
+                font-size: 0; /* Orijinal ok metnini gizle */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+            
+            /* Butonların içindeki okları gizleyip yerine metin ekliyoruz */
+            .nav-button#prev-btn::before {
+                content: '← Önceki';
+                font-size: 1rem; /* Yeni metnin boyutunu ayarla */
+            }
+
+            .nav-button#next-btn::after {
+                content: 'Sonraki →';
+                font-size: 1rem; /* Yeni metnin boyutunu ayarla */
+            }
+        }
     </style>
 </head>
 <body>
@@ -254,226 +307,86 @@
         const db = getFirestore(app);
         const ui = { sinavArayuzu: document.getElementById('sinav-arayuzu'), sonucArayuzu: document.getElementById('sonuc-arayuzu'), soruIcerik: document.getElementById('soru-icerik'), optikFormIcerik: document.getElementById('optik-form-icerik'), sonlandirBtn: document.getElementById('sinav-sonlandir-btn'), prevBtn: document.getElementById('prev-btn'), nextBtn: document.getElementById('next-btn'), onayPopup: document.getElementById('onay-popup'), bilgiPopup: document.getElementById('bilgi-popup'), sayacPopup: document.getElementById('sayac-popup'), soruDetayPopup: document.getElementById('soru-detay-popup'), kullaniciAdSoyad: document.querySelector('.kullanici-ad-soyad'), appContainer: document.getElementById('app-container'), sonuclaraDonBtn: document.getElementById('sonuclara-don-btn') };
         const SORU_HAVUZU = [ 
-{  
-        "metin": "Space is the boundless, three-dimensional extent in which objects and events occur ---- they have relative position and direction.",
-        "secenekler": [
-            "so that",
-            "because",
-            "whatever",
-            "now that",
-            "when"
-        ],
-        "dogruCevap": "E"
-    },
-    {
-        "metin": "Cubism ---- a major impact on artists of the first decades of the 20th century and it ---- rise to development of new trends in art.",
-        "secenekler": [
-            "was having / was giving",
-            "had / gave",
-            "has had / had given",
-            "had had / would give",
-            "could have / will give"
-        ],
-        "dogruCevap": "B"
-    },
-    {
-        "metin": "In April, Apple ---- iPhone warranty policies in its second-biggest market, China, after its after-sales service ---- more for about two weeks of condemnation by the state-run media.",
-        "secenekler": [
-            "has altered / has suffered",
-            "had altered / might have suffered",
-            "altered / suffered",
-            "was to alter / could suffer",
-            "had to alter / was suffering"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "The urgency with the energy challenges is pressing ---- politicians in major industrial and developing countries, ---- private companies and private sector leaders.",
-        "secenekler": [
-            "the more / the more",
-            "such / that",
-            "neither / or",
-            "as / much as",
-            "not only / but also"
-        ],
-        "dogruCevap": "E"
-    },
-    {
-        "metin": "---- the Chinese invented paper money way back in the 10th century, it was introduced as a broad method of exchange in America in the 17th century.",
-        "secenekler": [
-            "As",
-            "Even though",
-            "As long as",
-            "No matter",
-            "Even if"
-        ],
-        "dogruCevap": "B"
-    },
-    {
-        "metin": "---- mining and precious stones have been human interests throughout the history of civilization, the development of the related sciences did not occur until the 18th century.",
-        "secenekler": [
-            "Although",
-            "Since",
-            "When",
-            "Before",
-            "After"
-        ],
-        "dogruCevap": "A"
-    },
-    {
-        "metin": "Tectonic earthquakes will occur ---- within the earth where there is sufficient stored elastic strain energy to drive fracture propagation along a fault plane.",
-        "secenekler": [
-            "other",
-            "anywhere",
-            "another",
-            "each other",
-            "any longer"
-        ],
-        "dogruCevap": "B"
-    },
-    {
-        "metin": "Scientists have split the atom, put men on the moon and discovered the DNA of mankind, ---- there are 10 key mysteries of human behavior which they have failed to fully explain.",
-        "secenekler": [
-            "unless",
-            "even if",
-            "when",
-            "yet",
-            "once"
-        ],
-        "dogruCevap": "D"
-    },
-    {
-        "metin": "The Zambian government has launched a campaign to educate and increase awareness of the benefits of biotechnology, including genetically modified crops, ---- change negative public opinion.",
-        "secenekler": [
-            "by means of",
-            "rather than",
-            "in order to",
-            "instead",
-            "with a view to"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "Julie ---- for hours when she suddenly ---- one of her classmates on the street.",
-        "secenekler": [
-            "has walked / had noticed",
-            "will be walking / notices",
-            "had been walking / noticed",
-            "was walking / had noticed",
-            "has been walking / has noticed"
-        ],
-        "dogruCevap": "c"
-    },
-    {
-        "metin": "The utilization of mobile devices, especially smart phones, has increased by the popularity of social networking sites ---- Facebook and Twitter.",
-        "secenekler": [
-            "as well",
-            "such as",
-            "so",
-            "for example",
-            "neither"
-        ],
-        "dogruCevap": "B"
-    },
-    {
-        "metin": "Following the Enlightenment of man after the French revolution, the ---- radical idea that women are no match to men disappeared altogether.",
-        "secenekler": [
-            "while",
-            "once",
-            "also",
-            "even",
-            "far"
-        ],
-        "dogruCevap": "B"
-    },
-    {
-        "metin": "Homo georgicus, which lived roughly 1.8 million years ago in Georgia, is the earliest hominid ---- in Europe.",
-        "secenekler": [
-            "to have been discovered",
-            "to discover",
-            "to be discovering",
-            "to have discovered",
-            "having been discovered"
-        ],
-        "dogruCevap": "A"
-    },
-    {
-        "metin": "A number of developmental theories have proven to be useful ---- identify, describe, and measure the cognitive, moral, emotional and social aspects of adolescent growth.",
-        "secenekler": [
-            "due to",
-            "in spite of",
-            "so as to",
-            "as far as",
-            "by way of"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "In an armed battle, a cease-fire is a limited period of time ---- opposing forces negotiate and do not take armed action against one another.",
-        "secenekler": [
-            "which",
-            "during which",
-            "what",
-            "that",
-            "whether"
-        ],
-        "dogruCevap": "B"
-    },
-    {
-        "metin": "A large majority of the students ---- after two to three-year preparatory education, in which there ---- undergraduate courses with almost exclusive emphasis on Math and Physics.",
-        "secenekler": [
-            "will admit / would be",
-            "are admitted / are",
-            "admit / were",
-            "were admitted / can be",
-            "admitted / will be"
-        ],
-        "dogruCevap": "B"
-    },
-    {
-        "metin": "When people ---- by a psychologist, they generally assume as if they ---- just normally speaking with a friend.",
-        "secenekler": [
-            "hypnotized / had been",
-            "are hypnotized / have been",
-            "have been hypnotized / are",
-            "were hypnotized / had been",
-            "are hypnotized / were"
-        ],
-        "dogruCevap": "E"
-    },
-    {
-        "metin": "---- as the \"London Array\", the construction of the largest ever offshore wind farm is underway off the southeastern coast of England.",
-        "secenekler": [
-            "Knowing",
-            "To be known",
-            "Having known",
-            "To have been known",
-            "Known"
-        ],
-        "dogruCevap": "E"
-    },
-    {
-        "metin": "---- population growth in the 1990s had been less than estimated, it is conceivable—though by no means assured—that offsetting economic performance would have accelerated the growth in energy use.",
-        "secenekler": [
-            "Even if",
-            "Because",
-            "Once",
-            "So as",
-            "Providing"
-        ],
-        "dogruCevap": "A"
-    },
-    {
-        "metin": "The costs of maintaining U.S. military superiority are substantial, ---- by historical standards, they are exceptionally small.",
-        "secenekler": [
-            "therefore",
-            "in addition",
-            "correspondingly",
-            "however",
-            "accordingly"
-        ],
-        "dogruCevap": "D"
-    }, ];
+		{ 
+            "metin": "Space is the boundless, three-dimensional extent in which objects and events occur ---- they have relative position and direction.",
+            "secenekler": ["so that","because","whatever","now that","when"], "dogruCevap": "E"
+        },
+        {
+            "metin": "Cubism ---- a major impact on artists of the first decades of the 20th century and it ---- rise to development of new trends in art.",
+            "secenekler": ["was having / was giving","had / gave","has had / had given","had had / would give","could have / will give"], "dogruCevap": "B"
+        },
+        {
+            "metin": "In April, Apple ---- iPhone warranty policies in its second-biggest market, China, after its after-sales service ---- more for about two weeks of condemnation by the state-run media.",
+            "secenekler": ["has altered / has suffered","had altered / might have suffered","altered / suffered","was to alter / could suffer","had to alter / was suffering"], "dogruCevap": "C"
+        },
+        {
+            "metin": "The urgency with the energy challenges is pressing ---- politicians in major industrial and developing countries, ---- private companies and private sector leaders.",
+            "secenekler": ["the more / the more","such / that","neither / or","as / much as","not only / but also"], "dogruCevap": "E"
+        },
+        {
+            "metin": "---- the Chinese invented paper money way back in the 10th century, it was introduced as a broad method of exchange in America in the 17th century.",
+            "secenekler": ["As","Even though","As long as","No matter","Even if"], "dogruCevap": "B"
+        },
+        {
+            "metin": "---- mining and precious stones have been human interests throughout the history of civilization, the development of the related sciences did not occur until the 18th century.",
+            "secenekler": ["Although","Since","When","Before","After"], "dogruCevap": "A"
+        },
+        {
+            "metin": "Tectonic earthquakes will occur ---- within the earth where there is sufficient stored elastic strain energy to drive fracture propagation along a fault plane.",
+            "secenekler": ["other","anywhere","another","each other","any longer"], "dogruCevap": "B"
+        },
+        {
+            "metin": "Scientists have split the atom, put men on the moon and discovered the DNA of mankind, ---- there are 10 key mysteries of human behavior which they have failed to fully explain.",
+            "secenekler": ["unless","even if","when","yet","once"], "dogruCevap": "D"
+        },
+        {
+            "metin": "The Zambian government has launched a campaign to educate and increase awareness of the benefits of biotechnology, including genetically modified crops, ---- change negative public opinion.",
+            "secenekler": ["by means of","rather than","in order to","instead","with a view to"], "dogruCevap": "C"
+        },
+        {
+            "metin": "Julie ---- for hours when she suddenly ---- one of her classmates on the street.",
+            "secenekler": ["has walked / had noticed","will be walking / notices","had been walking / noticed","was walking / had noticed","has been walking / has noticed"], "dogruCevap": "C" // Hata düzeltildi: 'c' -> 'C'
+        },
+        {
+            "metin": "The utilization of mobile devices, especially smart phones, has increased by the popularity of social networking sites ---- Facebook and Twitter.",
+            "secenekler": ["as well","such as","so","for example","neither"], "dogruCevap": "B"
+        },
+        {
+            "metin": "Following the Enlightenment of man after the French revolution, the ---- radical idea that women are no match to men disappeared altogether.",
+            "secenekler": ["while","once","also","even","far"], "dogruCevap": "B"
+        },
+        {
+            "metin": "Homo georgicus, which lived roughly 1.8 million years ago in Georgia, is the earliest hominid ---- in Europe.",
+            "secenekler": ["to have been discovered","to discover","to be discovering","to have discovered","having been discovered"], "dogruCevap": "A"
+        },
+        {
+            "metin": "A number of developmental theories have proven to be useful ---- identify, describe, and measure the cognitive, moral, emotional and social aspects of adolescent growth.",
+            "secenekler": ["due to","in spite of","so as to","as far as","by way of"], "dogruCevap": "C"
+        },
+        {
+            "metin": "In an armed battle, a cease-fire is a limited period of time ---- opposing forces negotiate and do not take armed action against one another.",
+            "secenekler": ["which","during which","what","that","whether"], "dogruCevap": "B"
+        },
+        {
+            "metin": "A large majority of the students ---- after two to three-year preparatory education, in which there ---- undergraduate courses with almost exclusive emphasis on Math and Physics.",
+            "secenekler": ["will admit / would be","are admitted / are","admit / were","were admitted / can be","admitted / will be"], "dogruCevap": "B"
+        },
+        {
+            "metin": "When people ---- by a psychologist, they generally assume as if they ---- just normally speaking with a friend.",
+            "secenekler": ["hypnotized / had been","are hypnotized / have been","have been hypnotized / are","were hypnotized / had been","are hypnotized / were"], "dogruCevap": "E"
+        },
+        {
+            "metin": "---- as the \"London Array\", the construction of the largest ever offshore wind farm is underway off the southeastern coast of England.",
+            "secenekler": ["Knowing","To be known","Having known","To have been known","Known"], "dogruCevap": "E"
+        },
+        {
+            "metin": "---- population growth in the 1990s had been less than estimated, it is conceivable—though by no means assured—that offsetting economic performance would have accelerated the growth in energy use.",
+            "secenekler": ["Even if","Because","Once","So as","Providing"], "dogruCevap": "A"
+        },
+        {
+            "metin": "The costs of maintaining U.S. military superiority are substantial, ---- by historical standards, they are exceptionally small.",
+            "secenekler": ["therefore","in addition","correspondingly","however","accordingly"], "dogruCevap": "D"
+        }, ];
         const TOPLAM_SORU = SORU_HAVUZU.length;
         const SORU_BASINA_DAKIKA = 1.5;
         const SINAV_SURESI_DAKIKA = Math.ceil(TOPLAM_SORU * SORU_BASINA_DAKIKA);
@@ -550,19 +463,13 @@
 
         function sinaviBaslat() { if (state.sinavAktif) return; resetState(); if (!sorulariYukle()) return; ui.sonucArayuzu.style.display = 'none'; ui.sinavArayuzu.style.display = 'block'; state.sinavAktif = true; sessionStorage.setItem('sinavAktif', 'true'); optikFormuCiz(); soruyuEkranaCiz(state.mevcutSoruIndex); startMainExamTimer(); startCurrentTime('exam-current-time'); }
         
-        // HATA DÜZELTME: Bu fonksiyon düzenlendi.
         function sinaviIncelemeModundaBaslat(reviewData) {
             resetState();
             state.isReviewMode = true;
             state.sonSonuc = reviewData;
             state.sorular = reviewData.sorular;
             state.ogrenciCevaplari = reviewData.ogrenciCevaplari;
-
-            // KALDIRILDI: Bu satırlar hataya sebep oluyordu, çünkü tüm popup'ları siliyordu.
-            // ui.appContainer.innerHTML = ''; 
-            // ui.appContainer.appendChild(ui.sinavArayuzu);
             
-            // YENİ: Artık sadece arayüzleri gizleyip gösteriyoruz.
             ui.sonucArayuzu.style.display = 'none'; 
             ui.sinavArayuzu.style.display = 'block'; 
 
@@ -596,5 +503,4 @@
 
     </script>
 </body>
-
 </html>
