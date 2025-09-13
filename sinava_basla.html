@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sınav Sistemi - Giriş</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d3d6e; --primary-light: #1a5a96;
+            --secondary-color: #6c757d; --secondary-dark: #5a6268;
+            --background-color: #f4f7fa; --card-background: #ffffff;
+            --text-color: #333; --text-light: #555;
+            --border-color: #e0e0e0; --shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+        .main-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            text-align: center;
+        }
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .start-button, .clear-button {
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .start-button {
+            background-color: var(--primary-light);
+        }
+        .start-button:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        .clear-button {
+            background-color: var(--secondary-color);
+            font-size: 1em;
+            padding: 12px 30px;
+        }
+        .clear-button:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+        .history-section h2 {
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        #gecmis-sinavlar-listesi {
+            max-height: 300px;
+            overflow-y: auto;
+            text-align: left;
+        }
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .history-item:hover {
+            border-color: var(--primary-color);
+            background-color: #eef5ff;
+        }
+        .history-item .info span { display: block; }
+        .history-item .date { font-weight: 600; color: var(--primary-color); }
+        .history-item .stats { font-size: 0.9em; color: var(--text-light); }
+        .history-item .review-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        /* YENİ: Profesyonel Geri Sayım Modalı için stiller */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+        .modal-content h2 {
+            color: var(--primary-color);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .countdown-circle {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        .countdown-circle span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4em;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .countdown-circle svg {
+            width: 200px;
+            height: 200px;
+            transform: rotate(-90deg);
+        }
+        .countdown-circle circle {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke-width: 10;
+            stroke: var(--border-color);
+        }
+        .countdown-circle circle.progress {
+            stroke: var(--primary-color);
+            stroke-dasharray: 565; /* 2 * PI * 90 */
+            stroke-dashoffset: 565;
+        }
+        .modal-overlay.show .countdown-circle circle.progress {
+            animation: countdown-anim 5s linear forwards;
+        }
+        @keyframes countdown-anim {
+            from { stroke-dashoffset: 565; }
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1>Elektronik Sınav Sistemine Hoş Geldiniz</h1>
+        <p>Yeni bir sınava başlamak için butona tıklayın veya geçmiş sınavlarınızı inceleyin.</p>
+        <div class="action-buttons">
+            <!-- DÜZENLENDİ: Buton metni daha anlaşılır hale getirildi -->
+            <button class="start-button" id="yeni-sinav-baslat">Yeni Sınava Başla</button>
+            <button class="clear-button" id="onbellek-temizle">Ön Belleği Temizle</button>
+        </div>
+        <div class="history-section">
+            <h2>Geçmiş Sınavlar</h2>
+            <div id="gecmis-sinavlar-listesi">
+                <!-- Geçmiş sınavlar buraya dinamik olarak eklenecek -->
+            </div>
+        </div>
+    </div>
+
+    <!-- YENİ: Profesyonel Geri Sayım Modalı -->
+    <div id="countdown-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <div class="countdown-circle">
+                <svg>
+                    <circle r="90" cx="100" cy="100"></circle>
+                    <circle r="90" cx="100" cy="100" class="progress"></circle>
+                </svg>
+                <span id="countdown-timer">5</span>
+            </div>
+            <h2>Sınav Başlıyor...</h2>
+            <p>Hazır olun, sınavınız saniyeler içinde başlayacak.</p>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            sessionStorage.removeItem('reviewData');
+            sessionStorage.removeItem('sinavAktif');
+
+            const yeniSinavBtn = document.getElementById('yeni-sinav-baslat');
+            // YENİ: Butonun click olayı artık doğrudan yönlendirme yapmak yerine geri sayımı başlatıyor
+            yeniSinavBtn.addEventListener('click', startExamCountdown);
+
+            const onbellekTemizleBtn = document.getElementById('onbellek-temizle');
+            onbellekTemizleBtn.addEventListener('click', () => {
+                if (confirm('Tüm sınav geçmişiniz ve oturum bilgileriniz kalıcı olarak silinecektir. Emin misiniz?')) {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    alert('Ön bellek ve tüm sınav geçmişi başarıyla temizlendi.');
+                    location.reload();
+                }
+            });
+
+            loadPastExams();
+        };
+
+        // YENİ: Geri sayımı başlatan profesyonel fonksiyon
+        function startExamCountdown() {
+            const overlay = document.getElementById('countdown-overlay');
+            const timerElement = document.getElementById('countdown-timer');
+            let count = 5;
+            
+            timerElement.textContent = count;
+            overlay.classList.add('show');
+
+            const interval = setInterval(() => {
+                count--;
+                timerElement.textContent = count;
+                if (count <= 0) {
+                    clearInterval(interval);
+                    window.location.href = './sinav.html';
+                }
+            }, 1000);
+
+            // Yeni sınav için oturum verilerini hazırla
+            sessionStorage.setItem('examStartTime', new Date().getTime());
+            sessionStorage.removeItem('reviewExamIndex');
+        }
+
+        function loadPastExams() {
+            const listContainer = document.getElementById('gecmis-sinavlar-listesi');
+            const sinavGecmisi = JSON.parse(localStorage.getItem('sinavGecmisi')) || [];
+
+            if (sinavGecmisi.length === 0) {
+                listContainer.innerHTML = '<p>İncelenecek geçmiş sınav bulunamadı.</p>';
+                return;
+            }
+
+            listContainer.innerHTML = '';
+            // YENİ: Geçmiş sınavlar en yeniden en eskiye doğru sıralandı
+            [...sinavGecmisi].reverse().forEach((sonuc, index) => {
+                const originalIndex = sinavGecmisi.length - 1 - index;
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                item.dataset.index = originalIndex;
+
+                item.innerHTML = `
+                    <div class="info">
+                        <span class="date">Sınav Tarihi: ${sonuc.tarih}</span>
+                        <span class="stats">Net: ${sonuc.netSayisi} (${sonuc.dogruSayisi}D, ${sonuc.yanlisSayisi}Y) - ${sonuc.toplamSoru} Soru</span>
+                    </div>
+                    <button class="review-btn">İncele</button>
+                `;
+
+                item.addEventListener('click', () => {
+                    // YENİ: İnceleme için doğru veriyi saklama yöntemi güncellendi
+                    sessionStorage.setItem('reviewData', JSON.stringify(sinavGecmisi[originalIndex]));
+                    window.location.href = './sinav.html';
+                });
+
+                listContainer.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>

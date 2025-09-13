@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sınav Sonuçları</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d3d6e;
+            --primary-light: #1a5a96;
+            --danger-color: #d9534f;
+            --danger-dark: #c9302c;
+            --success-color: #28a745;
+            --success-dark: #1e7e34;
+            --info-color: #5bc0de;
+            --info-dark: #31b0d5;
+            --background-color: #f4f7fa;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --text-light: #555;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        
+        .top-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .top-header h1 {
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .panel {
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .left-panel, .right-panel {
+            width: 100%;
+        }
+
+        .summary-box h2, .right-panel h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-item {
+            padding: 20px 15px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .stat-item svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .stat-item .label {
+            font-size: 0.9em;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .stat-item .value {
+            font-size: 2.2em;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .stat-item.dogru { background-color: #eaf6ec; color: var(--success-dark); }
+        .stat-item.yanlis { background-color: #fdeded; color: var(--danger-dark); }
+        .stat-item.bos { background-color: #f1f3f5; color: #555; }
+        .stat-item.net { background-color: #eef5ff; color: var(--primary-light); }
+
+        .action-buttons { margin-top: 20px; }
+        
+        .action-buttons button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: background-color 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .action-buttons button:hover { transform: translateY(-2px); }
+        
+        #sorulara-don-btn { background-color: var(--info-color); }
+        #sorulara-don-btn:hover { background-color: var(--info-dark); }
+        #gecmisi-goster-btn { background-color: var(--success-color); }
+        #gecmisi-goster-btn:hover { background-color: var(--success-dark); }
+        
+        #gecmis-listesi { display: none; margin-top: 20px; max-height: 300px; overflow-y: auto; padding-right: 10px;}
+        
+        .history-item {
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            transition: box-shadow 0.2s;
+        }
+        .history-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+
+        .history-item .tarih {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        #optik-form-sonuc { max-height: 550px; overflow-y: auto; padding-right: 10px; }
+
+        .optik-grup {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 8px 5px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .optik-grup .soru-no { font-weight: 600; }
+        
+        .optik-secenekler { display: flex; gap: 6px; }
+        
+        .optik-secenekler div {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .optik-secenekler div.dogru {
+            background-color: var(--success-color) !important;
+            color: white !important;
+            border-color: var(--success-dark) !important;
+        }
+        .optik-secenekler div.yanlis {
+            background-color: var(--danger-color) !important;
+            color: white !important;
+            border-color: var(--danger-dark) !important;
+        }
+
+        @media (min-width: 992px) {
+            .main-content { flex-direction: row; align-items: flex-start; }
+            .left-panel { flex: 1; position: sticky; top: 20px; }
+            .right-panel { flex: 2; }
+        }
+    </style>
+</head>
+<body>
+    <header class="top-header">
+        <h1>Sınav Sonuç Raporu: <span id="kullanici-ad-soyad"></span></h1>
+    </header>
+    <div class="container">
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="summary-box panel">
+                    <h2>Son Sınav Analizi</h2>
+                    <div class="stats">
+                        <div class="stat-item dogru">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            <div class="label">DOĞRU</div>
+                            <div id="dogru-sayisi" class="value">0</div>
+                        </div>
+                        <div class="stat-item yanlis">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                            <div class="label">YANLIŞ</div>
+                            <div id="yanlis-sayisi" class="value">0</div>
+                        </div>
+                        <div class="stat-item bos">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            <div class="label">BOŞ</div>
+                            <div id="bos-sayisi" class="value">0</div>
+                        </div>
+                        <div class="stat-item net">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                            <div class="label">NET</div>
+                            <div id="net-sayisi" class="value">0.00</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons panel">
+                    <button id="sorulara-don-btn">Soruları Gözden Geçir</button>
+                    <button id="gecmisi-goster-btn">Tüm Sınav Geçmişi</button>
+                    <div id="gecmis-listesi"></div>
+                </div>
+            </div>
+            <div class="right-panel panel">
+                <h3>Cevap Anahtarı</h3>
+                <div id="optik-form-sonuc"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            kullaniciBilgileriniYukle();
+            const sinavGecmisi = JSON.parse(localStorage.getItem('sinavGecmisi')) || [];
+            if (sinavGecmisi.length > 0) {
+                const sonSonuc = sinavGecmisi[sinavGecmisi.length - 1];
+                sonSonucuYukle(sonSonuc);
+                gecmisiYukle(sinavGecmisi);
+                document.getElementById('gecmisi-goster-btn').addEventListener('click', () => {
+                    const liste = document.getElementById('gecmis-listesi');
+                    liste.style.display = (liste.style.display === 'none' || !liste.style.display) ? 'block' : 'none';
+                });
+            } else {
+                document.querySelector('.main-content').innerHTML = "<h2 style='text-align:center; width:100%;'>Görüntülenecek bir sınav sonucu bulunamadı. Lütfen önce bir sınavı tamamlayın.</h2>";
+            }
+        };
+
+        function kullaniciBilgileriniYukle() {
+            const isim = sessionStorage.getItem('kullaniciIsim') || '';
+            const soyisim = sessionStorage.getItem('kullaniciSoyisim') || '';
+            document.getElementById('kullanici-ad-soyad').textContent = (isim && soyisim) ? `${isim.toUpperCase()} ${soyisim.toUpperCase()}` : 'Misafir Aday';
+        }
+        
+        function sonSonucuYukle(sonuc) {
+            document.getElementById('dogru-sayisi').textContent = sonuc.dogrusayisi;
+            document.getElementById('yanlis-sayisi').textContent = sonuc.yanlisSayisi;
+            document.getElementById('bos-sayisi').textContent = sonuc.bosSayisi;
+            document.getElementById('net-sayisi').textContent = sonuc.netSayisi;
+            optikFormuOlustur(sonuc);
+            document.getElementById('sorulara-don-btn').addEventListener('click', () => {
+                const reviewData = { sorular: sonuc.sorular, ogrenciCevaplari: sonuc.ogrenciCevaplari };
+                sessionStorage.setItem('reviewData', JSON.stringify(reviewData));
+                window.location.href = 'index.html'; // Ana sınav sayfasına yönlendirme
+            });
+        }
+        
+        function gecmisiYukle(gecmis) {
+            const listeElementi = document.getElementById('gecmis-listesi');
+            listeElementi.innerHTML = '';
+            [...gecmis].reverse().forEach(sonuc => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                item.innerHTML = `<div class="tarih">${sonuc.tarih}</div><div><strong>Doğru:</strong> ${sonuc.dogruSayisi} | <strong>Yanlış:</strong> ${sonuc.yanlisSayisi} | <strong>Boş:</strong> ${sonuc.bosSayisi} | <strong>Net:</strong> ${sonuc.netSayisi}</div>`;
+                listeElementi.appendChild(item);
+            });
+        }
+        
+        function optikFormuOlustur(sonuc) {
+            const optikFormElementi = document.getElementById('optik-form-sonuc');
+            let html = '';
+            sonuc.sorular.forEach(soru => {
+                const ogrenciCevabi = sonuc.ogrenciCevaplari[soru.id];
+                const dogruCevap = soru.dogruCevap;
+                html += `<div class="optik-grup"><span class="soru-no">${soru.id}</span><div class="optik-secenekler">`;
+                ['A', 'B', 'C', 'D', 'E'].forEach(secenek => {
+                    let siniflar = '';
+                    if (secenek.toLowerCase() === dogruCevap.toLowerCase()) {
+                         siniflar += ' dogru';
+                    } else if (ogrenciCevabi && secenek.toLowerCase() === ogrenciCevabi.toLowerCase()) {
+                        // Öğrencinin cevabı yanlışsa 'yanlis' sınıfını ekle
+                        siniflar += ' yanlis';
+                    }
+                    html += `<div class="${siniflar.trim()}">${secenek}</div>`;
+                });
+                html += `</div></div>`;
+            });
+            optikFormElementi.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
+
