@@ -311,86 +311,316 @@
         const db = getFirestore(app);
         const ui = { sinavArayuzu: document.getElementById('sinav-arayuzu'), sonucArayuzu: document.getElementById('sonuc-arayuzu'), soruIcerik: document.getElementById('soru-icerik'), optikFormIcerik: document.getElementById('optik-form-icerik'), sonlandirBtn: document.getElementById('sinav-sonlandir-btn'), prevBtn: document.getElementById('prev-btn'), nextBtn: document.getElementById('next-btn'), onayPopup: document.getElementById('onay-popup'), bilgiPopup: document.getElementById('bilgi-popup'), sayacPopup: document.getElementById('sayac-popup'), soruDetayPopup: document.getElementById('soru-detay-popup'), kullaniciAdSoyad: document.querySelector('.kullanici-ad-soyad'), appContainer: document.getElementById('app-container'), sonuclaraDonBtn: document.getElementById('sonuclara-don-btn') };
         const SORU_HAVUZU = [ 
-		{ 
-            "metin": "Space is the boundless, three-dimensional extent in which objects and events occur ---- they have relative position and direction.",
-            "secenekler": ["so that","because","whatever","now that","when"], "dogruCevap": "E"
-        },
-        {
-            "metin": "Cubism ---- a major impact on artists of the first decades of the 20th century and it ---- rise to development of new trends in art.",
-            "secenekler": ["was having / was giving","had / gave","has had / had given","had had / would give","could have / will give"], "dogruCevap": "B"
-        },
-        {
-            "metin": "In April, Apple ---- iPhone warranty policies in its second-biggest market, China, after its after-sales service ---- more for about two weeks of condemnation by the state-run media.",
-            "secenekler": ["has altered / has suffered","had altered / might have suffered","altered / suffered","was to alter / could suffer","had to alter / was suffering"], "dogruCevap": "C"
-        },
-        {
-            "metin": "The urgency with the energy challenges is pressing ---- politicians in major industrial and developing countries, ---- private companies and private sector leaders.",
-            "secenekler": ["the more / the more","such / that","neither / or","as / much as","not only / but also"], "dogruCevap": "E"
-        },
-        {
-            "metin": "---- the Chinese invented paper money way back in the 10th century, it was introduced as a broad method of exchange in America in the 17th century.",
-            "secenekler": ["As","Even though","As long as","No matter","Even if"], "dogruCevap": "B"
-        },
-        {
-            "metin": "---- mining and precious stones have been human interests throughout the history of civilization, the development of the related sciences did not occur until the 18th century.",
-            "secenekler": ["Although","Since","When","Before","After"], "dogruCevap": "A"
-        },
-        {
-            "metin": "Tectonic earthquakes will occur ---- within the earth where there is sufficient stored elastic strain energy to drive fracture propagation along a fault plane.",
-            "secenekler": ["other","anywhere","another","each other","any longer"], "dogruCevap": "B"
-        },
-        {
-            "metin": "Scientists have split the atom, put men on the moon and discovered the DNA of mankind, ---- there are 10 key mysteries of human behavior which they have failed to fully explain.",
-            "secenekler": ["unless","even if","when","yet","once"], "dogruCevap": "D"
-        },
-        {
-            "metin": "The Zambian government has launched a campaign to educate and increase awareness of the benefits of biotechnology, including genetically modified crops, ---- change negative public opinion.",
-            "secenekler": ["by means of","rather than","in order to","instead","with a view to"], "dogruCevap": "C"
-        },
-        {
-            "metin": "Julie ---- for hours when she suddenly ---- one of her classmates on the street.",
-            "secenekler": ["has walked / had noticed","will be walking / notices","had been walking / noticed","was walking / had noticed","has been walking / has noticed"], "dogruCevap": "C" // Hata düzeltildi: 'c' -> 'C'
-        },
-        {
-            "metin": "The utilization of mobile devices, especially smart phones, has increased by the popularity of social networking sites ---- Facebook and Twitter.",
-            "secenekler": ["as well","such as","so","for example","neither"], "dogruCevap": "B"
-        },
-        {
-            "metin": "Following the Enlightenment of man after the French revolution, the ---- radical idea that women are no match to men disappeared altogether.",
-            "secenekler": ["while","once","also","even","far"], "dogruCevap": "B"
-        },
-        {
-            "metin": "Homo georgicus, which lived roughly 1.8 million years ago in Georgia, is the earliest hominid ---- in Europe.",
-            "secenekler": ["to have been discovered","to discover","to be discovering","to have discovered","having been discovered"], "dogruCevap": "A"
-        },
-        {
-            "metin": "A number of developmental theories have proven to be useful ---- identify, describe, and measure the cognitive, moral, emotional and social aspects of adolescent growth.",
-            "secenekler": ["due to","in spite of","so as to","as far as","by way of"], "dogruCevap": "C"
-        },
-        {
-            "metin": "In an armed battle, a cease-fire is a limited period of time ---- opposing forces negotiate and do not take armed action against one another.",
-            "secenekler": ["which","during which","what","that","whether"], "dogruCevap": "B"
-        },
-        {
-            "metin": "A large majority of the students ---- after two to three-year preparatory education, in which there ---- undergraduate courses with almost exclusive emphasis on Math and Physics.",
-            "secenekler": ["will admit / would be","are admitted / are","admit / were","were admitted / can be","admitted / will be"], "dogruCevap": "B"
-        },
-        {
-            "metin": "When people ---- by a psychologist, they generally assume as if they ---- just normally speaking with a friend.",
-            "secenekler": ["hypnotized / had been","are hypnotized / have been","have been hypnotized / are","were hypnotized / had been","are hypnotized / were"], "dogruCevap": "E"
-        },
-        {
-            "metin": "---- as the \"London Array\", the construction of the largest ever offshore wind farm is underway off the southeastern coast of England.",
-            "secenekler": ["Knowing","To be known","Having known","To have been known","Known"], "dogruCevap": "E"
-        },
-        {
-            "metin": "---- population growth in the 1990s had been less than estimated, it is conceivable—though by no means assured—that offsetting economic performance would have accelerated the growth in energy use.",
-            "secenekler": ["Even if","Because","Once","So as","Providing"], "dogruCevap": "A"
-        },
-        {
-            "metin": "The costs of maintaining U.S. military superiority are substantial, ---- by historical standards, they are exceptionally small.",
-            "secenekler": ["therefore","in addition","correspondingly","however","accordingly"], "dogruCevap": "D"
-        }, ];
+		{
+        "metin": "The Romans, in particular the senatorial class, ---- themselves on the traditions of seriousness, plainness and common sense that they ---- from their earliest ancestors.",
+        "secenekler": [
+            "were to pride / would have inherited",
+            "would have prided / were inheriting",
+            "were priding / were going to inherit",
+            "prided / had inherited",
+            "had prided / have inherited"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "Scientists conducting research to shed light on the possible causes of several mental disorders ---- a link between lack of normal gut bacteria and brain development changes that ---- schizophrenia.",
+        "secenekler": [
+            "had observed / used to cause",
+            "have observed / could cause",
+            "will observe / should cause",
+            "observed / should have caused",
+            "are observing / had to cause"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "People’s concepts of Western medicine ---- over the past several years, and they ---- much more of their healthcare providers.",
+        "secenekler": [
+            "have shifted / are demanding",
+            "have been shifted / had demanded",
+            "had shifted / were going to demand",
+            "shifted / demanded",
+            "were shifted / will demand"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "Military geography ---- military leaders with information about areas where they ---- to operate.",
+        "secenekler": [
+            "had provided / will need",
+            "is providing / had needed",
+            "will provide / used to need",
+            "provides / may need",
+            "will be providing / needed"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "In 1957, the Soviet Union ---- the first man-made object in orbit around the Earth, and since then, numerous launch vehicles ---- to improve the reliability and cost of placing objects in orbit.",
+        "secenekler": [
+            "has placed / had been developed",
+            "had been placing / are developed",
+            "placed / have been developed",
+            "had placed / are being developed",
+            "was placing / were developed"
+        ],
+        "dogruCevap": "C"
+    },
+    {
+        "metin": "Making friends ---- a number of positive effects on the ways children interact, and these effects ---- short-term or long-term.",
+        "secenekler": [
+            "can have / could be",
+            "would have / may be",
+            "might have / used to be",
+            "must have / should be",
+            "may have / would have been"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "The use of general anesthesia in dentistry ---- in 1844, when Horace Wells first ---- the chemical compound nitrous oxide during a dental procedure.",
+        "secenekler": [
+            "had begun / use",
+            "began / used",
+            "has begun / was using",
+            "begins / had used",
+            "was beginning / has used"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "By the early 1800s, naturalists and early scientists ---- a good body of artefacts and archaeological knowledge and ---- it to interpret humanity's past in an orderly fashion.",
+        "secenekler": [
+            "were going to accumulate / had used",
+            "had accumulated / were using",
+            "would accumulate / should have used",
+            "accumulated / would have used",
+            "used to accumulate / are using"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Ada Lovelace earned her place in history as the first computer programmer, but she ---- it without the help of British mathematician Charles Babbage, who developed a mechanical calculator that ---- nearly any mathematical task ordered.",
+        "secenekler": [
+            "should not have done / must perform",
+            "could not have done / could perform",
+            "might not have done / can perform",
+            "did not use to do / may perform",
+            "would not have done / had to perform"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Chinese influence on Japan ---- in the 7th and 8th centuries as Japanese rulers ---- to build a Chinese style of bureaucracy and society.",
+        "secenekler": [
+            "would peak / used to seek",
+            "has peaked / seek",
+            "was peaking / were seeking",
+            "had peaked / had sought",
+            "peaked / sought"
+        ],
+        "dogruCevap": "E"
+    },
+{
+        "metin": "Since Iron Man, a ground-breaking movie ---- in 2008, Marvel and its parent company, Disney, ---- about two superhero films a year, grossing upwards of $8.3 billion globally.",
+        "secenekler": [
+            "was premiering / are producing",
+            "has premiered / used to produce",
+            "will premiere / had produced",
+            "premiered / have produced",
+            "has been premiering / produce"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "In 2014, the US confirmed 125 cases of measles and declared that nearly half of the victims ---- against measles, so it seems the reason of the outbreak ---- America's growing anti-vaccination movement.",
+        "secenekler": [
+            "have not been vaccinated / is",
+            "had not been vaccinated / was",
+            "were not vaccinated / will be",
+            "will not be vaccinated / has been",
+            "are not vaccinated / had been"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "In 1957, the Soviet Union ---- the first man-made object in orbit around the Earth, and since then, numerous launch vehicles ---- to improve the reliability and cost of placing objects in orbit.",
+        "secenekler": [
+            "has placed / had been developed",
+            "had been placing / are developed",
+            "placed / have been developed",
+            "had placed / are being developed",
+            "was placing / were developed"
+        ],
+        "dogruCevap": "C"
+    },
+    {
+        "metin": "Arnica, a plant that ---- extensively in European folk medicine for hundreds of years, ---- as an internal treatment for dysentery and gout in the past.",
+        "secenekler": [
+            "is used / was being prescribed",
+            "would be used / had been prescribed",
+            "has been used / was prescribed",
+            "is being used / is prescribed",
+            "was used / would have been prescribed"
+        ],
+        "dogruCevap": "C"
+    },
+    {
+        "metin": "Low-fat, flavoured yogurt ---- very high in added sugar and thickeners, so it ---- better to choose plain, whole-milk yogurt and blend it with fresh fruit or honey to get natural sweetness.",
+        "secenekler": [
+            "may be / has to be",
+            "should be / had to be",
+            "would be / must be",
+            "used to be / could be",
+            "can be / might be"
+        ],
+        "dogruCevap": "E"
+    },
+    {
+        "metin": "Today, the Internet ---- access to public and private biological databases that ---- the work of thousands of biotech researchers around the world.",
+        "secenekler": [
+            "will provide / were supporting",
+            "provided / would support",
+            "would provide / supported",
+            "provides / support",
+            "had provided / have supported"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "Although dingoes evolved from domestic dogs that ---- to Australia from elsewhere, they ---- feral once humans no longer controlled their breeding or survival.",
+        "secenekler": [
+            "have been brought / had gone",
+            "had been brought / went",
+            "were to be brought / would go",
+            "are brought / have gone",
+            "would be brought / were going to go"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Today, many neonatal care units ---- massage therapy with premature infants, as the gentle touch of the massage therapist ---- to calm and relax these babies.",
+        "secenekler": [
+            "will use / had seemed",
+            "used / will have seemed",
+            "were using / will seem",
+            "had used / has seemed",
+            "use / seems"
+        ],
+        "dogruCevap": "E"
+    },
+    {
+        "metin": "Aromatic plants ---- for their healing, preservative, and pleasurable qualities throughout recorded history, in both the East and West.",
+        "secenekler": [
+            "have employed",
+            "had employed",
+            "were employing",
+            "are being employed",
+            "have been employed"
+        ],
+        "dogruCevap": "E"
+    },
+{
+        "metin": "Although dingoes evolved from domestic dogs that ---- to Australia from elsewhere, they ---- feral once humans no longer controlled their breeding or survival.",
+        "secenekler": [
+            "have been brought / had gone",
+            "had been brought / went",
+            "were to be brought / would go",
+            "are brought / have gone",
+            "would be brought / were going to go"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Ferdinand, Prince of Brunswick, who ---- as an officer in the Prussian Army in 1740, ---- a friend of Frederick the Great.",
+        "secenekler": [
+            "has been appointed / will become",
+            "could be appointed / might become",
+            "was appointed / became",
+            "is appointed / has become",
+            "will be appointed / was becoming"
+        ],
+        "dogruCevap": "C"
+    },
+    {
+        "metin": "Military geography ---- military leaders with information about areas where they ---- to operate.",
+        "secenekler": [
+            "had provided / will need",
+            "is providing / had needed",
+            "will provide / used to need",
+            "provides / may need",
+            "will be providing / needed"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "While the death of Queen Victoria in 1901 at the age of 81 hardly came as a shock, her funeral ---- a huge, international event because she ---- on the throne since 1837.",
+        "secenekler": [
+            "became / had been",
+            "would have become / was",
+            "was becoming / would be",
+            "had become / used to be",
+            "would become / could be"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "Since Iron Man, a ground-breaking movie ---- in 2008, Marvel and its parent company, Disney, ---- about two superhero films a year, grossing upwards of $8.3 billion globally.",
+        "secenekler": [
+            "was premiering / are producing",
+            "has premiered / used to produce",
+            "will premiere / had produced",
+            "premiered / have produced",
+            "has been premiering / produce"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "Before banknotes and coins ----, people used a variety of other objects for trading goods.",
+        "secenekler": [
+            "introduced",
+            "are introduced",
+            "be introduced",
+            "were introducing",
+            "were introduced"
+        ],
+        "dogruCevap": "E"
+    },
+    {
+        "metin": "In 2014, the US confirmed 125 cases of measles and declared that nearly half of the victims ---- against measles, so it seems the reason of the outbreak ---- America's growing anti-vaccination movement.",
+        "secenekler": [
+            "have not been vaccinated / is",
+            "had not been vaccinated / was",
+            "were not vaccinated / will be",
+            "will not be vaccinated / has been",
+            "are not vaccinated / had been"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Habitat ---- a broad term that we use to describe the surroundings or conditions where any given organism ----.",
+        "secenekler": [
+            "has been / lived",
+            "is / lives",
+            "had been / had lived",
+            "was / has lived",
+            "will be / would live"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "The La Braña-Arintero site ---- by chance in 2006 by Julio Manuel Vidal Encinas, an archaeologist of the Council of Castilla y León.",
+        "secenekler": [
+            "has been discovered",
+            "was discovering",
+            "has discovered",
+            "was discovered",
+            "discovered"
+        ],
+        "dogruCevap": "D"
+    },
+
+ ];
         const TOPLAM_SORU = SORU_HAVUZU.length;
         const SORU_BASINA_DAKIKA = 1.5;
         const SINAV_SURESI_DAKIKA = Math.ceil(TOPLAM_SORU * SORU_BASINA_DAKIKA);
@@ -508,3 +738,4 @@
     </script>
 </body>
 </html>
+
