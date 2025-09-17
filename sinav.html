@@ -311,443 +311,267 @@
         const db = getFirestore(app);
         const ui = { sinavArayuzu: document.getElementById('sinav-arayuzu'), sonucArayuzu: document.getElementById('sonuc-arayuzu'), soruIcerik: document.getElementById('soru-icerik'), optikFormIcerik: document.getElementById('optik-form-icerik'), sonlandirBtn: document.getElementById('sinav-sonlandir-btn'), prevBtn: document.getElementById('prev-btn'), nextBtn: document.getElementById('next-btn'), onayPopup: document.getElementById('onay-popup'), bilgiPopup: document.getElementById('bilgi-popup'), sayacPopup: document.getElementById('sayac-popup'), soruDetayPopup: document.getElementById('soru-detay-popup'), kullaniciAdSoyad: document.querySelector('.kullanici-ad-soyad'), appContainer: document.getElementById('app-container'), sonuclaraDonBtn: document.getElementById('sonuclara-don-btn') };
         const SORU_HAVUZU = [ 
-		{
-        "metin": "Insomnia ---- chronic when someone ---- difficulty in either getting to sleep or staying asleep for at least three months.",
-        "secenekler": [
-            "became / is going to have",
-            "becomes / has had",
-            "was becoming / is having",
-            "has become / was having",
-            "had become / will have"
-        ],
-        "dogruCevap": "B"
-    },
-    {
-        "metin": "St. Albans in London ---- a cathedral officially until 1877, but it ---- in existence hundreds of years before that.",
-        "secenekler": [
-            "cannot be made / was",
-            "had not been made / has been",
-            "was not made / had been",
-            "could not have been made / is",
-            "has not been made / would be"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "Mounting evidence ---- that Alzheimer's disease ---- caused by inflammatory immune response to pathogens that afflict brain tissue.",
-        "secenekler": [
-            "would suggest / had to be",
-            "suggested / used to be",
-            "had suggested / can be",
-            "has suggested / will be",
-            "suggests / could be"
-        ],
-        "dogruCevap": "E"
-    },
-    {
-        "metin": "The National Centre for Health ---- periodic Nutrition Examination Surveys since 1960 to determine how much obesity ---- among Americans.",
-        "secenekler": [
-            "had been conducting / is increasing",
-            "is conducting / was increasing",
-            "has been conducting / has increased",
-            "was conducting / will have increased",
-            "will conduct / increased"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "Tea ---- an expensive luxury in Britain, so expensive that it was kept under lock, until the 19th century when large quantities ---- from India and Ceylon (present-day Sri Lanka).",
-        "secenekler": [
-            "has been / had been imported",
-            "would have been / were being imported",
-            "used to be / should have been imported",
-            "had been / might have been imported",
-            "was / were imported"
-        ],
-        "dogruCevap": "E"
-    },
-    {
-        "metin": "In 2014, the US confirmed 125 cases of measles and declared that nearly half of the victims ---- against measles, so it seems the reason of the outbreak ---- America's growing anti-vaccination movement.",
-        "secenekler": [
-            "have not been vaccinated / is",
-            "had not been vaccinated / was",
-            "were not vaccinated / will be",
-            "will not be vaccinated / has been",
-            "are not vaccinated / had been"
-        ],
-        "dogruCevap": "B"
-    },
-    {
-        "metin": "As the internationalisation of business life ---- dramatically throughout the world, new kinds of requirements ---- on employees’ task performance and adjustment to other cultures.",
-        "secenekler": [
-            "had increased / would be set",
-            "increases / were set",
-            "has increased / are being set",
-            "was increasing / would have been set",
-            "increased / could have been set"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "The Romans, in particular the senatorial class, ---- themselves on the traditions of seriousness, plainness and common sense that they ---- from their earliest ancestors.",
-        "secenekler": [
-            "were to pride / would have inherited",
-            "would have prided / were inheriting",
-            "were priding / were going to inherit",
-            "prided / had inherited",
-            "had prided / have inherited"
-        ],
-        "dogruCevap": "D"
-    },
-    {
-        "metin": "Although humans ---- Mercury from Earth for thousands of years, its close proximity to the Sun ---- it difficult for astronomers to learn much about the planet.",
-        "secenekler": [
-            "will observe / made",
-            "are observing / makes",
-            "had observed / was making",
-            "have been observing / has made",
-            "were observing / had made"
-        ],
-        "dogruCevap": "D"
-    },
-    {
-        "metin": "Aromatic plants ---- for their healing, preservative, and pleasurable qualities throughout recorded history, in both the East and West.",
-        "secenekler": [
-            "have employed",
-            "had employed",
-            "were employing",
-            "are being employed",
-            "have been employed"
-        ],
-        "dogruCevap": "E"
-    },
-    {
-        "metin": "Although simple games ---- available on mainframe computers in the years after the Second World War, their widespread adoption ---- until the emergence of personal computers.",
-        "secenekler": [
-            "were going to be / could wait",
-            "had been / should have waited",
-            "were / had to wait",
-            "used to be / would have waited",
-            "would have been / must have waited"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "Health experts emphasise that people ---- vitamins and minerals from their food unless they require an amount that ---- through diet and their doctors recommend certain supplements.",
-        "secenekler": [
-            "used to get / might not be reached",
-            "should get / cannot be reached",
-            "are able to get / need not be reached",
-            "may get / must not be reached",
-            "have to get / should not be reached"
-        ],
-        "dogruCevap": "B"
-    },
-    {
-        "metin": "Since the earliest days of the Mercury program, NASA ---- medical data from its astronauts by studying their physiological responses to spaceflight, and in 2014, it ---- a large report compiled from decades of data.",
-        "secenekler": [
-            "was gathering / may have released",
-            "had been gathering / has released",
-            "would be gathering / had to release",
-            "has been gathering / released",
-            "gathered/ had released"
-        ],
-        "dogruCevap": "D"
-    },
-    {
-        "metin": "Palaeontologists ---- that small mammals ---- the extinction of dinosaurs by eating their eggs; however, currently they think the rise of mammals was an effect of the demise of dinosaurs.",
-        "secenekler": [
-            "may think / could have caused",
-            "must think / would have caused",
-            "used to think / might have caused",
-            "had to think / should have caused",
-            "would think / must have caused"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "Scientists conducting research to shed light on the possible causes of several mental disorders ---- a link between lack of normal gut bacteria and brain development changes that ---- schizophrenia.",
-        "secenekler": [
-            "had observed / used to cause",
-            "have observed / could cause",
-            "will observe / should cause",
-            "observed / should have caused",
-            "are observing / had to cause"
-        ],
-        "dogruCevap": "B"
-    },
-    {
-        "metin": "Arnica, a plant that ---- extensively in European folk medicine for hundreds of years, ---- as an internal treatment for dysentery and gout in the past.",
-        "secenekler": [
-            "is used / was being prescribed",
-            "would be used / had been prescribed",
-            "has been used / was prescribed",
-            "is being used / is prescribed",
-            "was used / would have been prescribed"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "Lifestyles that ---- to be marginal in the past ---- less unusual and increasingly common in the present world.",
-        "secenekler": [
-            "were considered / are becoming",
-            "are considered / have been becoming",
-            "have been considered / had become",
-            "might be considered / used to become",
-            "must be considered / will become"
-        ],
-        "dogruCevap": "A"
-    },
-    {
-        "metin": "Military geography ---- military leaders with information about areas where they ---- to operate.",
-        "secenekler": [
-            "had provided / will need",
-            "is providing / had needed",
-            "will provide / used to need",
-            "provides / may need",
-            "will be providing / needed"
-        ],
-        "dogruCevap": "D"
-    },
-    {
-        "metin": "Findings of a recent study ---- that green tea and carrots ---- a part in fighting Alzheimer's disease, though there is need for more research.",
-        "secenekler": [
-            "had suggested / would play",
-            "have suggested / should have played",
-            "suggest / could play",
-            "suggested / used to play",
-            "are suggesting / will have played"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "Ferdinand, Prince of Brunswick, who ---- as an officer in the Prussian Army in 1740, ---- a friend of Frederick the Great.",
-        "secenekler": [
-            "has been appointed / will become",
-            "could be appointed / might become",
-            "was appointed / became",
-            "is appointed / has become",
-            "will be appointed / was becoming"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "Making friends ---- a number of positive effects on the ways children interact, and these effects ---- short-term or long-term.",
-        "secenekler": [
-            "can have / could be",
-            "would have / may be",
-            "might have / used to be",
-            "must have / should be",
-            "may have / would have been"
-        ],
-        "dogruCevap": "A"
-    },
-    {
-        "metin": "The Louvre Museum in Paris, which ---- in 1793 to display the royal art collection, ---- throughout the years as subsequent rulers increased the size of the collection.",
-        "secenekler": [
-            "had been founded / had been growing",
-            "has been founded / is growing",
-            "was being founded / grew",
-            "is founded / will grow",
-            "was founded / has grown"
-        ],
-        "dogruCevap": "E"
-    },
-    {
-        "metin": "A recent analysis of blood tests ---- that HIV (Human Immunodeficiency Virus) was widespread in the 1970s.",
-        "secenekler": [
-            "will reveal",
-            "has been revealed",
-            "is revealed",
-            "has revealed",
-            "was revealed"
-        ],
-        "dogruCevap": "D"
-    },
-    {
-        "metin": "While dentistry ---- a quiet revolution with the emergence of holistic dentists, their complementary methods ---- under criticism.",
-        "secenekler": [
-            "has been undergoing / remain",
-            "undergoes / would remain",
-            "is undergoing / had remained",
-            "had undergone / would have remained",
-            "was undergoing / have remained"
-        ],
-        "dogruCevap": "A"
-    },
-    {
-        "metin": "E-mail advertising ---- a good reputation these days, as people realise that it ---- affordable and effective.",
-        "secenekler": [
-            "gets / has to be",
-            "was getting / could be",
-            "has been getting / used to be",
-            "will get / should be",
-            "is getting / can be"
-        ],
-        "dogruCevap": "E"
-    },
-    {
-        "metin": "Genetic evidence indicates that higher levels of caffeine in a person’s blood ---- to lower weight, but people ---- that drinking more coffee will be a route to weight loss.",
-        "secenekler": [
-            "used to be linked / cannot assume",
-            "would be linked / might not assume",
-            "may be linked / should not assume",
-            "could be linked / will not assume",
-            "ought to be linked / must not assume"
-        ],
-        "dogruCevap": "C"
-    },
 {
-        "metin": "For years it ---- that life ---- below a certain depth or above a certain heat.",
+        "metin": "In a network combining the entire world, no one will be trustworthy enough, so connecting your computer to the Internet is ---- going to bring some risks.",
         "secenekler": [
-            "will be thought / might not exist",
-            "is thought / cannot exist",
-            "was thought / could not exist",
-            "has been thought / should not exist",
-            "had been thought / would not have existed"
+            "inadequately",
+            "incomparably",
+            "inevitably",
+            "inequally",
+            "ineffectively"
         ],
         "dogruCevap": "C"
     },
     {
-        "metin": "It was not until the 1st century AD that Hero of Alexandria ---- the five basic machines as the lever, the wheel and axle, the wedge, the pulley and the screw, but the first three of these ---- in common use since about 3000 BCE.",
+        "metin": "As their pregnancy ----, most women become increasingly short of breath because of the effect of the hormone progesterone on the central breathing system.",
         "secenekler": [
-            "classified / had been",
-            "classifies / have been",
-            "had classified / were",
-            "has classified / are",
-            "was classifying / would be"
-        ],
-        "dogruCevap": "A"
-    },
-    {
-        "metin": "Hydrogen ---- so easy to make (one just adds a metal to an acid) that it ---- as early as the late 15th century.",
-        "secenekler": [
-            "was / is being known",
-            "has been / will be known",
-            "is / was known",
-            "will be / is known",
-            "had been / has been known"
-        ],
-        "dogruCevap": "C"
-    },
-    {
-        "metin": "When entrepreneurs in the early 20th century ﬁrst ---- to record moving pictures of real-life events, people ---- to call this new type of storytelling documentaries.",
-        "secenekler": [
-            "began / started",
-            "were beginning / start",
-            "have begun / were starting",
-            "had begun / have started",
-            "begin / had started"
-        ],
-        "dogruCevap": "A"
-    },
-    {
-        "metin": "Until recently, human storm chasers ---- close enough to a tornado to insert their measuring equipment by hand, but now, they ---- risk their lives for much longer thanks to the newly-developed drones.",
-        "secenekler": [
-            "used to get / must not need to",
-            "had to get / may not need to",
-            "should have got / might not need to",
-            "may have got / should not need to",
-            "must have got / could not need to"
+            "expands",
+            "progresses",
+            "persuades",
+            "differs",
+            "boosts"
         ],
         "dogruCevap": "B"
     },
     {
-        "metin": "Since NASA ---- using the Space Shuttle in 2011, the Soyuz spacecraft ---- the only way for astronauts to reach the International Space Station.",
+        "metin": "As soon as the computer was invented, a growing ---- for computers by scientists and engineers evolved, and numerous universities started their own projects to produce them in the 1940s.",
         "secenekler": [
-            "will stop / was",
-            "was stopping / is",
-            "stops / will be",
-            "stopped / has been",
-            "may stop / used to be"
+            "isolation",
+            "concern",
+            "awareness",
+            "demand",
+            "variety"
         ],
         "dogruCevap": "D"
     },
     {
-        "metin": "Cataracts were once a leading cause of age-related blindness, but today ophthalmologists surgically ---- cataracts and replace the lens with a prosthetic intraocular one.",
+        "metin": "It is important to have big goals, but we need to ---- these goals into small, measurable pieces, or milestones, making them easier to handle and achieve.",
         "secenekler": [
-            "removed",
-            "are removed",
-            "have been removed",
-            "remove",
-            "are being removed"
-        ],
-        "dogruCevap": "D"
-    },
-    {
-        "metin": "A study found that a diet rich in vegetables, fruit, fish, cereals and monounsatured fats, such as olive oil, ---- the loss of brain cells and ---- you mentally sharper for longer.",
-        "secenekler": [
-            "reduced / should have kept",
-            "reduces / could keep",
-            "will reduce / must have kept",
-            "has reduced / need to keep",
-            "had reduced / might keep"
-        ],
-        "dogruCevap": "B"
-    },
-{
-        "metin": "Before banknotes and coins ----, people used a variety of other objects for trading goods.",
-        "secenekler": [
-            "introduced",
-            "are introduced",
-            "be introduced",
-            "were introducing",
-            "were introduced"
-        ],
-        "dogruCevap": "E"
-    },
-    {
-        "metin": "Today, the Internet ---- access to public and private biological databases that ---- the work of thousands of biotech researchers around the world.",
-        "secenekler": [
-            "will provide / were supporting",
-            "provided / would support",
-            "would provide / supported",
-            "provides / support",
-            "had provided / have supported"
-        ],
-        "dogruCevap": "D"
-    },
-    {
-        "metin": "By further study of a lizard's ability to regenerate its tail, researchers ---- they ---- the same effect to treat injured humans.",
-        "secenekler": [
-            "say / may harness",
-            "have said / might have harnessed",
-            "said / should have harnessed",
-            "had said / could have harnessed",
-            "will say / had better harness"
+            "break down",
+            "reflect on",
+            "pull through",
+            "cut off",
+            "put off"
         ],
         "dogruCevap": "A"
     },
     {
-        "metin": "Today, many neonatal care units ---- massage therapy with premature infants, as the gentle touch of the massage therapist ---- to calm and relax these babies.",
+        "metin": "By messing with the balance of microorganisms in the body and by killing too many of the good bacteria in your gut, antibiotics may have certain ---- effects on your health.",
         "secenekler": [
-            "will use / had seemed",
-            "used / will have seemed",
-            "were using / will seem",
-            "had used / has seemed",
-            "use / seems"
+            "prevalent",
+            "negligible",
+            "damaging",
+            "consistent",
+            "abundant"
+        ],
+        "dogruCevap": "C"
+    },
+    {
+        "metin": "Scientists believe an asteroid struck the planet Earth off Mexico’s Yucatán Peninsula some 65 million years ago, bringing about the ---- of almost 50 percent of the plant species then living on Earth.",
+        "secenekler": [
+            "extinction",
+            "identification",
+            "differentiation",
+            "invasion",
+            "exhibition"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "The Hanseatic League, a confederation of North German cities founded in the late 1200’s, ---- special areas in cities across north Europe and controlled most trading routes.",
+        "secenekler": [
+            "set up",
+            "put aside",
+            "turned down",
+            "came out",
+            "kept off"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "Managers must often decide whether to drop products or departments that are not as ---- as desired.",
+        "secenekler": [
+            "profitable",
+            "abrupt",
+            "severe",
+            "dependent",
+            "consistent"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "Cognitive and behavioural changes after a stroke are common yet often ---- because their effects may be subtle.",
+        "secenekler": [
+            "overlooked",
+            "identified",
+            "avoided",
+            "estimated",
+            "examined"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "Current research has suggested that people who consume more trans fatty acids have ---- greater levels of aggression.",
+        "secenekler": [
+            "independently",
+            "significantly",
+            "deliberately",
+            "mutually",
+            "preciously"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Technology is the practical ---- of knowledge and skills to make tools, machines, vehicles and other useful things.",
+        "secenekler": [
+            "elimination",
+            "expectation",
+            "responsibility",
+            "application",
+            "diversity"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "No one has to read a textbook to learn that children’s problem solving abilities improve ---- across childhood.",
+        "secenekler": [
+            "deliberately",
+            "dramatically",
+            "approximately",
+            "respectively",
+            "incidentally"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Although the game of baseball as it is known today is uniquely American, it ---- the popular English children’s bat-and-ball game called rounders.",
+        "secenekler": [
+            "gets along",
+            "derives from",
+            "accounts for",
+            "goes through",
+            "brings about"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Many experts agree that preventing or treating obesity in childhood will ---- the rate of heart diseases in adulthood.",
+        "secenekler": [
+            "explain",
+            "accomplish",
+            "reduce",
+            "deliver",
+            "specify"
+        ],
+        "dogruCevap": "C"
+    },
+    {
+        "metin": "In crime scene investigation, forensic science ---- evidence that may link a suspect to a crime or prove him or her innocent.",
+        "secenekler": [
+            "initiates",
+            "accelerates",
+            "precedes",
+            "counters",
+            "provides"
         ],
         "dogruCevap": "E"
     },
     {
-        "metin": "At the end of the 17th century, Isaac Newton ---- his laws of motion and gravity; making science more precise and mathematical than it ---- before.",
+        "metin": "The health and wealth of any society depend on having ---- supplies of clean water.",
         "secenekler": [
-            "had set down / would have been",
-            "was setting down / has been",
-            "set down / had been",
-            "would set down / was",
-            "had been setting down / would be"
+            "adequate",
+            "definite",
+            "selective",
+            "initial",
+            "urgent"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "United Nations Peacekeeping emerged out of World War II to help warring countries or communities to create the ---- for world peace.",
+        "secenekler": [
+            "inventions",
+            "predictions",
+            "interventions",
+            "accomplishments",
+            "conditions"
+        ],
+        "dogruCevap": "E"
+    },
+    {
+        "metin": "While most synthetic vitamins are just as useful as the natural forms, controversy has arisen over the ---- of synthetic versus natural forms of vitamin E.",
+        "secenekler": [
+            "adjustment",
+            "vulnerability",
+            "efficacy",
+            "severity",
+            "inspection"
         ],
         "dogruCevap": "C"
     },
- {
-        "metin": "Cataract extraction and lens replacement ---- sight for more than ninety per cent of people who otherwise ---- vision to cataracts.",
+    {
+        "metin": "The fruit of the cacao tree and the seeds or beans it contains ---- a lengthy and complex series of transformations in order to yield chocolate.",
         "secenekler": [
-            "would have restored / were going to lose",
-            "have to restore / used to lose",
-            "should have restored / might lose",
-            "must restore / may have lost",
-            "can restore / would lose"
+            "overcome",
+            "dismiss",
+            "highlight",
+            "undergo",
+            "exchange"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "Although considering how someone may react to a situation can be worthwhile, making ---- about another person’s behaviour may lead you to the wrong conclusions.",
+        "secenekler": [
+            "promises",
+            "assumptions",
+            "mistakes",
+            "priorities",
+            "compliments"
+        ],
+        "dogruCevap": "B"
+    },
+    {
+        "metin": "Child labour, economic inequality, racism and discrimination of all types abounded until the liberal tradition of fairness and justice ---- a free and fair society thanks to the French Revolution in 1789.",
+        "secenekler": [
+            "carried out",
+            "took over",
+            "coped with",
+            "brought about",
+            "kept away"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "By the time psychology came into its own as an ---- discipline after separating from philosophy, the scientific revolution was two centuries old.",
+        "secenekler": [
+            "offensive",
+            "artificial",
+            "inadequate",
+            "independent",
+            "outdated"
+        ],
+        "dogruCevap": "D"
+    },
+    {
+        "metin": "The achievements of Sherlock Holmes, the most famous fictional detective in history, derive from his ---- to balance the physical evidence of a case with the more challenging subjective truths into a single coherent judgement.",
+        "secenekler": [
+            "capability",
+            "prejudice",
+            "deception",
+            "resistance",
+            "nomination"
+        ],
+        "dogruCevap": "A"
+    },
+    {
+        "metin": "With the knowledge that surface and ground waters are resources that can be overused, farmers are paying attention to the methods of conserving and reusing water while ---- the growth of their crops.",
+        "secenekler": [
+            "transmitting",
+            "surrendering",
+            "admitting",
+            "installing",
+            "maintaining"
         ],
         "dogruCevap": "E"
     },
@@ -869,6 +693,7 @@
     </script>
 </body>
 </html>
+
 
 
 
